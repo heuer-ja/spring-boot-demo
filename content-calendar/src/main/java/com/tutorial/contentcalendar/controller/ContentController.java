@@ -47,6 +47,7 @@ public class ContentController {
 
     //============ PUT REQUESTS ===========
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}") // parameter will be sent due to @RequestBody
     public void update(@RequestBody  Content content, @PathVariable Integer id){
         // if content does not exist
@@ -54,5 +55,11 @@ public class ContentController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not found!");
 
         this.repository.save(content);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id){
+        this.repository.removeById(id);
     }
 }

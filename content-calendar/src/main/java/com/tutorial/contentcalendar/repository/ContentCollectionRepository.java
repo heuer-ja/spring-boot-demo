@@ -62,5 +62,9 @@ public class ContentCollectionRepository {
         return this.contentList.stream().anyMatch(c -> c.id().equals(id));
     }
 
+    public boolean removeById(Integer id){
+        return this.contentList
+                .removeIf(content -> content.id().equals(id));
+    }
 
 }
