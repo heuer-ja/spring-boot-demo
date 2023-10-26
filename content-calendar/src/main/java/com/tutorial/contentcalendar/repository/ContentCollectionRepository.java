@@ -14,20 +14,21 @@ import java.util.Optional;
 @Repository
 public class ContentCollectionRepository {
 
-    private final List<Content> content = new ArrayList<>();
+    private final List<Content> contentList = new ArrayList<>();
 
-    public ContentCollectionRepository(){
+    public ContentCollectionRepository() {
 
     }
 
     /********************************/
 
-    /** Initializes list of `content`
+    /**
+     * Initializes list of `content`
      */
     @PostConstruct // PostConstruct calls method after `Dependency Injection` of this class, e.g., in a controller
-    private void init(){
-        this.content.add(new Content(
-            1,
+    private void init() {
+        this.contentList.add(new Content(
+                1,
                 "First Blog",
                 "This is my first blog post! :)",
                 Status.IDEA,
@@ -41,13 +42,18 @@ public class ContentCollectionRepository {
     /********************************/
 
 
+
     public List<Content> findAll() {
-        return this.content;
+        return this.contentList;
     }
 
     public Optional<Content> findById(Integer id){
-        return this.content.stream()
+        return this.contentList.stream()
                 .filter(ci -> ci.id().equals(id))
                 .findFirst();
+    }
+
+    public void save(Content content){
+        this.contentList.add(content);
     }
 }
