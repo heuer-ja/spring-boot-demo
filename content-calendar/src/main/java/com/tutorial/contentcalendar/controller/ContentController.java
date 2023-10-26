@@ -45,5 +45,14 @@ public class ContentController {
         this.repository.save(content);
     }
 
+    //============ PUT REQUESTS ===========
 
+    @PutMapping("/{id}") // parameter will be sent due to @RequestBody
+    public void update(@RequestBody  Content content, @PathVariable Integer id){
+        // if content does not exist
+        if(! this.repository.existsById(id))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not found!");
+
+        this.repository.save(content);
+    }
 }

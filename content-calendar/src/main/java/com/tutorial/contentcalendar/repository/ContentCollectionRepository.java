@@ -54,6 +54,13 @@ public class ContentCollectionRepository {
     }
 
     public void save(Content content){
+        boolean b = this.contentList.removeIf(c -> c.id().equals(content.id()));
         this.contentList.add(content);
     }
+
+    public boolean existsById(Integer id){
+        return this.contentList.stream().anyMatch(c -> c.id().equals(id));
+    }
+
+
 }
