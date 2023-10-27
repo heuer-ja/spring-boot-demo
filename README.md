@@ -86,3 +86,41 @@ You can use this table to explain the concept of repositories in Spring and Spri
 - Components
 - Auto Configuration
 - Dependency Injection
+
+
+# Working with Data
+For this demo project it is too complicated to work with PostgreSQL or Co. Instead, `H2` is used. 
+
+### H2 Database
+To use this **embedded** database, do the following steps:
+
+1. **Dependencies:** In pom.xml add
+    ```agsl
+    <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+    
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    ```
+
+2. **Install dependencies:** run mvn or build app 
+3. **Configure h2-console:** add following environment variables in file `application.properties`
+    ```agsl
+    spring.h2.console.enabled=true
+    spring.datasource.generate-unique-name=false 
+    spring.datasource.name={name, e.g., content}
+    ```
+4. **Connect to Database:** open `localhost:{port}/h2-console` and add the input given by Spring Boot's console output
+    ```
+   JDBC URL: jbdc:h2:mem:{name}
+   User Name: {user name}
+   PW: {pw}
+   ```
+      
+    Press `Test Connection` and `Connect`.
+5. 
