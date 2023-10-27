@@ -18,6 +18,9 @@ ALl the code should be inside `src/main/java/{PACKAGE}`. Then, divide code into 
   - Application.java
 ```
 
+### Application Properties
+The file `src/main/resources/application.properties` contains settings / environment variables. 
+
 ## Spring Boot CLI (Commands)
 *Hint: If `maven` is installed, type `mvn` instead of `./mvnw`, e.g., `mvn spring-boot:run`.*
 
@@ -81,6 +84,5 @@ You can use this table to explain the concept of repositories in Spring and Spri
 ## TODO: Learnings
 - Beans
 - Components
-
-## Test Paragraph 4 Git
-Hello this is a test
+- Auto Configuration
+- Dependency Injection
