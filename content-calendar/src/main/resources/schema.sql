@@ -1,20 +1,14 @@
-CREATE TABLE IF NOT EXISTS Content(
+CREATE TABLE Content(
     id INTEGER AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL,
-    desc text,
-    status VARCHAR(20) NOT NULL,
-    content_type VARCHAR(50) NOT NULL,
-    date_created TIMESTAMP NOT NULL,
-    date_updated TIMESTAMP,
+    title VARCHAR(255),
+    desc TEXT,
+    status VARCHAR(20),
+    content_type VARCHAR(50),
+    date_created DATETIME,
+    date_updated DATETIME,
     url VARCHAR(255),
     primary key (id)
 );
 
 INSERT INTO Content(title, desc, status, content_type, date_created)
-VALUES(
-    'First Blog Post!',
-    'Hey, this is my 1. blog! How are you?',
-    'IN_PROGRESS',
-    'ARTICLE',
-    CURRENT_TIMESTAMP
-);
+VALUES ( 'Automated Title', 'huhu', 'IN_PROGRESS', 'ARTICLE', CURRENT_TIMESTAMP())
