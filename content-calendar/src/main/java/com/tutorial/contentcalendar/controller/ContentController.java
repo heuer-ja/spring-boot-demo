@@ -3,6 +3,7 @@ package com.tutorial.contentcalendar.controller;
 
 import com.tutorial.contentcalendar.model.Content;
 import com.tutorial.contentcalendar.repository.ContentCollectionRepository;
+import com.tutorial.contentcalendar.repository.ContentRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,12 +15,13 @@ import java.util.Optional;
 // Controller for CRUD Content
 @RestController
 @RequestMapping("/api/content") // path to get to the controller
+@CrossOrigin
 public class ContentController {
 
-    private final ContentCollectionRepository repository;
+    private final ContentRepository repository;
     public ContentController(
         // Dependency injection
-        ContentCollectionRepository repository
+        ContentRepository repository
     ) {
         this.repository = repository;
     }
@@ -60,6 +62,6 @@ public class ContentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id){
-        this.repository.removeById(id);
+        this.repository.deleteById(id);
     }
 }

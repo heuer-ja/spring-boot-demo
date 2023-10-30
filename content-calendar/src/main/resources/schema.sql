@@ -10,3 +10,5 @@ CREATE TABLE Content(
     primary key (id)
 );
 
+INSERT INTO Content(title, desc, status, content_type, date_created)
+VALUES ( 'Automated Title', 'huhu', 'IN_PROGRESS', 'ARTICLE', CURRENT_TIMESTAMP())
