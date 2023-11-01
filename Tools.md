@@ -4,7 +4,7 @@ In the following, some tools for backend development are introduced
 
 
 ## Protobuf (Protocoll Buffer)
-**Problem:** How to send information across network/internet?
+**Problem to Solve:** How to send information across network/internet?
 **Solution:** Use a **Data Format** like, `XML`, `JSON`, `Protobuf`.
 <br>
 **Definition:** Protocol Buffers (protobuf) is a method for serializing structured data in a `binary format`. 
@@ -51,3 +51,79 @@ The following example illustrates how to:
     // Deserialize: bytes --> object
     Person deserializedPerson = Person.parseFrom(serializedData);
     ```
+
+## Webflux 
+**Problem to Solve - Concurrent Requests:** When dealing with *lots of concurrent request*, these request are often handeled *inefficient*, resulting in (1) resource consumption, (2) blocking, (3) decreased responsiveness in web applications.
+
+**Soluton - Reactive Programming:** The paradigm of *Reactive Programming* solves the problem of handeling *concurrent requests* by introducing principles of non-blocking, event-driven, and asynchronous operations. 
+
+<br>
+
+**Definition:** 
+Webflux is a implementation of the *Reactive Programming* Paradigm. It is a programming framework integrated in the *Spring* ecosystem designed to efficientely manage concurrent requests. 
+
+### Example
+The following example illustrates how a `@RestController` handels the same task - *returning User based in id* - using different techniques/syntaxes.
+
+**Syntax Comparision:**
+
+| Syntax    | Method Type                       | Blocking    | Description                                                                                   | Streaming | IoT |
+|-----------|-----------------------------------|-------------|-----------------------------------------------------------------------------------------------|-----------|---------------------------------------|
+| Java      | `User getUser()`                   | High        | Synchronous; blocking until the result is available.   | No        | No                                    |
+| Java      | `Future<User> getUser()`           | Low         | Asynchronous; waiting for the result without blocking the main thread. | No        | No                                    |
+| Java      | `CompletableFuture<User> getUser()` | Low         | Asynchronous;  similar to `Future`, but more control for asynchronous operations. | No        | No                                    |
+| WebFlux   | `Mono<User> getUser()`             | Very Low    | Reactive programming representing a potentially asynchronous operation with non-blocking capabilities. | No        | Yes                                   |
+| WebFlux   | `Flux<User> getUser()`             | Very Low    | Reactive programming; handling sequences of data/events. | Yes       | Yes                                   |
+
+<br>
+
+**Code**:
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+
+import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
+
+
+@RestController
+public class BlockingUserController {
+
+    @Autowired
+    private UserRepository repository;
+
+    // BLOCKING
+    @GetMapping("/get/user/{id}")
+    public User getUser(@PathVariable Long id) {
+        return repository.findById(id);
+    }
+
+    // BLOCKING AFTER 1s
+    @GetMapping("/get/user/{id}")
+    public Future<User> getUser(@PathVariable Long id) {
+        return repository.findById(id);
+    }
+
+    // NON BLOCKING
+    @GetMapping("/get/user/semi-blocking/{id}")
+    public CompletableFuture<User> getUser(@PathVariable Long id) {
+        return repository.findById(id);
+    }
+
+    // WEBFLUX: MONO
+    @GetMapping("/get/user/mono/{id}")
+    public Mono<User> getUser(@PathVariable Long id) {
+        return repository.findById(id);
+    }
+
+    // WEBFLUX: FLUX (list)
+    @GetMapping("/get/user/flux/{id}")
+    public Flux<User> getAllUsers() {
+        return repository.findAll();
+    }
+}
+```
