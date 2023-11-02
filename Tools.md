@@ -127,3 +127,30 @@ public class BlockingUserController {
     }
 }
 ```
+
+
+## OAuth2
+**Problem to Solve - Third Parties** How to How securely and conveniently `grant third-party applications access` to user data and resources without exposing login credentials and while ensuring user consent?
+
+**Solution - Authorization Framework**  A standardized framework for `authorization` is required. It should provide mechanisms for users to 
+- grant limited permissions to third-party applications
+- offer token-based authentication
+- enable fine-grained access control. 
+
+Additionally, it should be extensible, interoperable across various service providers and applications, and user-friendly. 
+
+<br>
+
+### OAuth2 Explained
+**Defintion:** OAuth2 is an open standard and `framework for secure authorization`. It provides a method for users to `grant third-party applications limited access` to their resources without sharing their login credentials. OAuth2 focuses on **granting access, not verifying identity**. It defines a set of protocols and mechanisms for this purpose.
+
+**OAuth1.0 vs OAuth2:**
+OAuth (OAuth 1.0) and OAuth2 are often compared, but they serve different purposes and have distinct characteristics:
+
+- **OAuth (OAuth 1.0)**: Focused on both authentication and authorization, often involving cryptographic signatures, which made it more complex.
+- **OAuth2**: Primarily designed for authorization, not authentication, with a simplified and more user-friendly approach, offering various grant types for different use cases.
+
+### Example (OAuth2-client in Spring Boot)
+There is a Spring Boot plugin `oauth2-client` which can be used to easily implement *OAuth2*. 
+
+No example here, better do a mini project or watch a video.
