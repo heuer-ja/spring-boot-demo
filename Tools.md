@@ -2,18 +2,18 @@
 In the following, some tools for backend development are introduced
 
 
-
 ## Protobuf (Protocoll Buffer)
 **Problem to Solve:** How to send information across network/internet?
-**Solution:** Use a **Data Format** like, `XML`, `JSON`, `Protobuf`.
-<br>
-**Definition:** Protocol Buffers (protobuf) is a method for serializing structured data in a `binary format`. 
-- **Serialization:** protobuf can serialize from and deserialize to almost any programming lanugage
-- **Storage:** storing serialized data in protobuf format is `byte-efficient` - around 100% byte reduction compared to JSON
-- **Strong Typing:** it declares and uses `strong typing`, resulting in low error rate
+**Solution:** Use a ***Data Format*** like, `XML`, `JSON`, `Protobuf`.
 
-### Example
-The following example illustrates how to:
+### About Protobuf
+**Definition:** Protocol Buffers (protobuf) is a method for serializing structured data in a ***binary format***. 
+- **Serialization:** protobuf can serialize from and deserialize to almost any programming lanugage
+- **Storage:** storing serialized data in protobuf format is ***byte-efficient*** - around 100% byte reduction compared to JSON
+- **Strong Typing:** it declares and uses ***strong typing***, resulting in low error rate
+
+
+**Example (Code):** The following example illustrates how to:
 - define a class/schema
 - use generated code to create an object
 - deserialize
@@ -57,12 +57,10 @@ The following example illustrates how to:
 
 **Soluton - Reactive Programming:** The paradigm of *Reactive Programming* solves the problem of handeling *concurrent requests* by introducing principles of non-blocking, event-driven, and asynchronous operations. 
 
-<br>
+### About Webflux
+**Definition:**  Webflux is a implementation of the *Reactive Programming* Paradigm. It is a programming framework integrated in the *Spring* ecosystem designed to efficientely manage concurrent requests. 
 
-**Definition:** 
-Webflux is a implementation of the *Reactive Programming* Paradigm. It is a programming framework integrated in the *Spring* ecosystem designed to efficientely manage concurrent requests. 
 
-### Example
 The following example illustrates how a `@RestController` handels the same task - *returning User based in id* - using different techniques/syntaxes.
 
 **Syntax Comparision:**
@@ -77,7 +75,7 @@ The following example illustrates how a `@RestController` handels the same task 
 
 <br>
 
-**Code**:
+**Example (Code):**
 
 ```java
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,27 +128,116 @@ public class BlockingUserController {
 
 
 ## OAuth2
-**Problem to Solve - Third Parties** How to How securely and conveniently `grant third-party applications access` to user data and resources without exposing login credentials and while ensuring user consent?
+**Problem to Solve - Third Parties** How to How securely and conveniently ***grant third-party applications access*** to user data and resources without exposing login credentials and while ensuring user consent?
 
-**Solution - Authorization Framework**  A standardized framework for `authorization` is required. It should provide mechanisms for users to 
+**Solution - Authorization Framework**  A standardized framework for ***authorization*** is required. It should provide mechanisms for users to 
 - grant limited permissions to third-party applications
 - offer token-based authentication
 - enable fine-grained access control. 
 
 Additionally, it should be extensible, interoperable across various service providers and applications, and user-friendly. 
 
-<br>
+### About OAuth2
+**Defintion:** OAuth2 is an open standard and ***framework for secure authorization***. It provides a method for users to *grant third-party applications limited access* to their resources without sharing their login credentials. OAuth2 focuses on ***granting access, not verifying identity***. It defines a set of protocols and mechanisms for this purpose.
 
-### OAuth2 Explained
-**Defintion:** OAuth2 is an open standard and `framework for secure authorization`. It provides a method for users to `grant third-party applications limited access` to their resources without sharing their login credentials. OAuth2 focuses on **granting access, not verifying identity**. It defines a set of protocols and mechanisms for this purpose.
-
-**OAuth1.0 vs OAuth2:**
-OAuth (OAuth 1.0) and OAuth2 are often compared, but they serve different purposes and have distinct characteristics:
+**OAuth1.0 vs OAuth2:** OAuth (OAuth 1.0) and OAuth2 are often compared, but they serve different purposes and have distinct characteristics:
 
 - **OAuth (OAuth 1.0)**: Focused on both authentication and authorization, often involving cryptographic signatures, which made it more complex.
 - **OAuth2**: Primarily designed for authorization, not authentication, with a simplified and more user-friendly approach, offering various grant types for different use cases.
 
-### Example (OAuth2-client in Spring Boot)
-There is a Spring Boot plugin `oauth2-client` which can be used to easily implement *OAuth2*. 
+**Example (Code - OAuth2-client in Spring Boot):** There is a Spring Boot plugin `oauth2-client` which can be used to easily implement *OAuth2*. 
 
-No example here, better do a mini project or watch a video.
+No example here, better do a mini-project or watch a video.
+
+
+## Lombok
+**Problem to Solve - Boilerplate Code:** How to reduce verbosity of Java code, eliminate boilerplate code while maintaining code readability and maintainability?
+
+**Solution - Code Generation:** Automatic generation of commonly used code structures which should enable developers to focus on their application's core logic while making the codebase more concise and readable.
+
+### About Lombok
+**Definition:** Lombok is a Java library that simplifies Java development by reducing boilerplate code through the use of ***annotations***. It enables ***automatic code generation*** during compilation, helping developers write cleaner and more concise Java code.
+
+**Syntax:** The table lists the most important *Lombok* annotarors:
+| Annotation         | Purpose                                                  |
+|-------------------- |---------------------------------------------------------|
+| `@Data`             | Generates getters, setters, `equals`, `hashCode`, and `toString` methods for a class. |
+| `@Getter`           | Generates getter methods for class fields.              |
+| `@Setter`           | Generates setter methods for class fields.              |
+| `@NoArgsConstructor` | Generates a no-argument constructor.                    |
+| `@AllArgsConstructor` | Generates a constructor with all class fields as arguments. |
+| `@Builder`          | Provides a builder pattern for creating instances of the class. |
+
+**Example (Code, Java Spring):** The following example shows a Java code with and without Lombok which illustrates how much boilerplate code can be saved by using *Lombok*.
+
+1. **Lombok**
+    ```java
+    import lombok.Data;
+
+    @Data // Lombok Annotation!
+    public class User {
+        private Long id;
+        private String firstName;
+        private String lastName;
+    }
+    ```
+2. **Without Lombok**
+    ```java
+    public class User {
+        private Long id;
+        private String firstName;
+        private String lastName;
+
+        public User() {
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            User user = (User) o;
+            return Objects.equals(id, user.id) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, firstName, lastName);
+        }
+
+        @Override
+        public String toString() {
+            return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+        }
+    }
+    ```
+
