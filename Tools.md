@@ -2,6 +2,92 @@
 In the following, some tools for backend development are introduced
 
 
+
+# Data Serialization
+## JackSON
+**Problem to Solve - JSON:** How to work with JSON data in Java, including serialization and deserialization?
+
+**Solution - JSON Parser:** A library that can handle the conversion between Java objects and JSON effortlessly is required.
+
+### About Jackson
+**Definition:** Jackson is a high-performance ***JSON processing library*** for Java. It provides a way to convert between Java objects and JSON data, i.e., ***serialization and deserialization***.
+
+**Syntax:**
+| Annotation         | Purpose                                                |
+|-------------------- |------------------------------------------------------- |
+| `@JsonProperty`    | Specifies the JSON property name for a Java field or method. |
+| `@JsonIgnore`      | Excludes a Java field or method from JSON serialization or deserialization. |
+| `@JsonInclude`     | Defines rules for including or ignoring properties in JSON serialization. |
+| `@JsonCreator`     | Indicates a constructor or factory method for deserialization. |
+| `@JsonFormat`      | Specifies a date or number format for serialization or deserialization. |
+
+<br>
+
+**Example (Code):** 
+```java
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Employee {
+    @JsonProperty("employeeId")
+    private int id;
+    private String firstName;
+    private String lastName;
+
+    public Employee(int id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+        // Create an Employee object
+        Employee employee = new Employee(12345, "John", "Doe");
+
+        // Create an ObjectMapper
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        //==================================
+        // SERIALIZE Employee object to JSON
+        String json = objectMapper.writeValueAsString(employee);
+
+        System.out.println("Serialized JSON: " + json);
+            > Output:
+            > {
+            >   "employeeId": 12345,   // Renamed from "id" using @JsonProperty
+            >   "firstName": "John",
+            >   "lastName": "Doe"
+            > }
+            
+        //==================================
+        // DE-SERIALIZE JSON to Employee object
+        Employee deserialized = objectMapper.readValue(json, Employee.class);
+
+        System.out.println("Deserialized Employee: " + 
+                    deserialized.getFirstName() + " " + 
+                    deserialized.getLastName());
+            > Output: 
+            > "Deserialized Employee: John Doe"
+
+    }
+}
+```
+
 ## Protobuf (Protocoll Buffer)
 **Problem to Solve:** How to send information across network/internet?
 **Solution:** Use a ***Data Format*** like, `XML`, `JSON`, `Protobuf`.
@@ -240,4 +326,7 @@ No example here, better do a mini-project or watch a video.
         }
     }
     ```
+
+
+
 
