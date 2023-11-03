@@ -13,13 +13,14 @@ In the following, some tools for backend development are introduced
 **Definition:** Jackson is a high-performance ***JSON processing library*** for Java. It provides a way to convert between Java objects and JSON data, i.e., ***serialization and deserialization***.
 
 **Syntax:**
-| Annotation         | Purpose                                                |
-|-------------------- |------------------------------------------------------- |
-| `@JsonProperty`    | Specifies the JSON property name for a Java field or method. |
-| `@JsonIgnore`      | Excludes a Java field or method from JSON serialization or deserialization. |
-| `@JsonInclude`     | Defines rules for including or ignoring properties in JSON serialization. |
-| `@JsonCreator`     | Indicates a constructor or factory method for deserialization. |
-| `@JsonFormat`      | Specifies a date or number format for serialization or deserialization. |
+
+| Annotation      | Purpose                                                                     |
+|-----------------|-----------------------------------------------------------------------------|
+| `@JsonProperty` | Specifies the JSON property name for a Java field or method.                |
+| `@JsonIgnore`   | Excludes a Java field or method from JSON serialization or deserialization. |
+| `@JsonInclude`  | Defines rules for including or ignoring properties in JSON serialization.   |
+| `@JsonCreator`  | Indicates a constructor or factory method for deserialization.              |
+| `@JsonFormat`   | Specifies a date or number format for serialization or deserialization.     |
 
 <br>
 
@@ -94,7 +95,7 @@ public class Employee {
 
 ### About Protobuf
 **Definition:** Protocol Buffers (protobuf) is a method for serializing structured data in a ***binary format***. 
-- **Serialization:** protobuf can serialize from and deserialize to almost any programming lanugage
+- **Serialization:** protobuf can serialize from and deserialize to almost any programming language
 - **Storage:** storing serialized data in protobuf format is ***byte-efficient*** - around 100% byte reduction compared to JSON
 - **Strong Typing:** it declares and uses ***strong typing***, resulting in low error rate
 
@@ -151,13 +152,13 @@ The following example illustrates how a `@RestController` handels the same task 
 
 **Syntax Comparision:**
 
-| Syntax    | Method Type                       | Blocking    | Description                                                                                   | Streaming | IoT |
-|-----------|-----------------------------------|-------------|-----------------------------------------------------------------------------------------------|-----------|---------------------------------------|
-| Java      | `User getUser()`                   | High        | Synchronous; blocking until the result is available.   | No        | No                                    |
-| Java      | `Future<User> getUser()`           | Low         | Asynchronous; waiting for the result without blocking the main thread. | No        | No                                    |
-| Java      | `CompletableFuture<User> getUser()` | Low         | Asynchronous;  similar to `Future`, but more control for asynchronous operations. | No        | No                                    |
-| WebFlux   | `Mono<User> getUser()`             | Very Low    | Reactive programming representing a potentially asynchronous operation with non-blocking capabilities. | No        | Yes                                   |
-| WebFlux   | `Flux<User> getUser()`             | Very Low    | Reactive programming; handling sequences of data/events. | Yes       | Yes                                   |
+| Syntax  | Method Type                         | Blocking | Description                                                                                            | Streaming | IoT |
+|---------|-------------------------------------|----------|--------------------------------------------------------------------------------------------------------|-----------|-----|
+| Java    | `User getUser()`                    | High     | Synchronous; blocking until the result is available.                                                   | No        | No  |
+| Java    | `Future<User> getUser()`            | Low      | Asynchronous; waiting for the result without blocking the main thread.                                 | No        | No  |
+| Java    | `CompletableFuture<User> getUser()` | Low      | Asynchronous;  similar to `Future`, but more control for asynchronous operations.                      | No        | No  |
+| WebFlux | `Mono<User> getUser()`              | Very Low | Reactive programming representing a potentially asynchronous operation with non-blocking capabilities. | No        | Yes |
+| WebFlux | `Flux<User> getUser()`              | Very Low | Reactive programming; handling sequences of data/events.                                               | Yes       | Yes |
 
 <br>
 
@@ -213,6 +214,8 @@ public class BlockingUserController {
 ```
 
 
+
+# Other
 ## OAuth2
 **Problem to Solve - Third Parties** How to How securely and conveniently ***grant third-party applications access*** to user data and resources without exposing login credentials and while ensuring user consent?
 
@@ -224,7 +227,7 @@ public class BlockingUserController {
 Additionally, it should be extensible, interoperable across various service providers and applications, and user-friendly. 
 
 ### About OAuth2
-**Defintion:** OAuth2 is an open standard and ***framework for secure authorization***. It provides a method for users to *grant third-party applications limited access* to their resources without sharing their login credentials. OAuth2 focuses on ***granting access, not verifying identity***. It defines a set of protocols and mechanisms for this purpose.
+**Definition:** OAuth2 is an open standard and ***framework for secure authorization***. It provides a method for users to *grant third-party applications limited access* to their resources without sharing their login credentials. OAuth2 focuses on ***granting access, not verifying identity***. It defines a set of protocols and mechanisms for this purpose.
 
 **OAuth1.0 vs OAuth2:** OAuth (OAuth 1.0) and OAuth2 are often compared, but they serve different purposes and have distinct characteristics:
 
@@ -244,15 +247,16 @@ No example here, better do a mini-project or watch a video.
 ### About Lombok
 **Definition:** Lombok is a Java library that simplifies Java development by reducing boilerplate code through the use of ***annotations***. It enables ***automatic code generation*** during compilation, helping developers write cleaner and more concise Java code.
 
-**Syntax:** The table lists the most important *Lombok* annotarors:
-| Annotation         | Purpose                                                  |
-|-------------------- |---------------------------------------------------------|
-| `@Data`             | Generates getters, setters, `equals`, `hashCode`, and `toString` methods for a class. |
-| `@Getter`           | Generates getter methods for class fields.              |
-| `@Setter`           | Generates setter methods for class fields.              |
-| `@NoArgsConstructor` | Generates a no-argument constructor.                    |
-| `@AllArgsConstructor` | Generates a constructor with all class fields as arguments. |
-| `@Builder`          | Provides a builder pattern for creating instances of the class. |
+**Syntax:** The table lists the most important *Lombok* annotators:
+
+| Annotation            | Purpose                                                                               |
+|-----------------------|---------------------------------------------------------------------------------------|
+| `@Data`               | Generates getters, setters, `equals`, `hashCode`, and `toString` methods for a class. |
+| `@Getter`             | Generates getter methods for class fields.                                            |
+| `@Setter`             | Generates setter methods for class fields.                                            |
+| `@NoArgsConstructor`  | Generates a no-argument constructor.                                                  |
+| `@AllArgsConstructor` | Generates a constructor with all class fields as arguments.                           |
+| `@Builder`            | Provides a builder pattern for creating instances of the class.                       |
 
 **Example (Code, Java Spring):** The following example shows a Java code with and without Lombok which illustrates how much boilerplate code can be saved by using *Lombok*.
 
@@ -328,5 +332,139 @@ No example here, better do a mini-project or watch a video.
     ```
 
 
+# Testing
+
+## JUnit5
+**Problem - Changes in Code** How to ensure that software functions correctly, especially when changes are made to the code or new features are added?
+
+**Solution - Unit Testing and TDD:** 
+- **Unit Testing:** Unit testing is a ***software testing technique*** where individual components or units of a software application are tested in isolation. It allows to verify that ***each part*** of the codebase functions correctly and meets its specifications. By writing tests for specific units, issues are detected early in the development process, making debugging and maintenance more manageable.
+
+- **Test-Driven Development (TDD):** TDD is a ***development approach*** that promotes ***writing tests before*** writing the actual code. This approach consists of 
+  1. creating failing tests that describe the desired behavior
+  2. writing code to make the tests pass
+  3. refactoring the code for improved quality.
+
+### JUnit
+**JUnit:** JUnit is a widely used ***testing framework*** for Java applications. It provides a structured and organized way to write and execute unit tests.
+
+**JUnit5:** JUnit5 is the ***latest version*** of the JUnit framework, introducing significant improvements over JUnit 4. It offers a more modern architecture and a flexible programming model.
+
+**JUnit Jupiter (Programming Framework):** Jupiter is the programming model within JUnit5. It provides a more powerful and flexible way to write tests, supporting ***annotations, assertions, and extensions*** to enhance the testing process.
+
+**Lifecycle of Tests:** For each test method a ***new instance*** of the test class is created. This ensures that ***tests are isolated*** from each other and do not share state, reducing the risk of test interference.
+
+**Top Most Important Assertions**
+
+| Assertion                             | Description                          |
+|---------------------------------------|--------------------------------------|
+| `assertEquals(expected, actual)`      | Compares if two values are equal.    |
+| `assertTrue(condition)`               | Checks if a condition is true.       |
+| `assertFalse(condition)`              | Checks if a condition is false.      |
+| `assertNotNull(object)`               | Verifies that an object is not null. |
+| `assertNull(object)`                  | Verifies that an object is null.     |
+| `assertArrayEquals(expected, actual)` | Compares arrays for equality.        |
+
+<br>
+
+**assertThrows:** The assertThrows method is used to ***assert that a specific exception*** is thrown during a test. It takes the expected exception type and a lambda expression that triggers the exception. If the exception is thrown as expected, the test passes.
+
+```java
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class MathUtilsTest {
+
+    @Test
+    void testDivideByZero() {
+        MathUtils mathUtils = new MathUtils();
+
+        // Division by 0 should trigger Exception. 
+        // If it does, test is passed.
+        assertThrows(ArithmeticException.class, () -> {
+            mathUtils.divide(5, 0);
+        });
+    }
+}
+```
+<br>
+
+**Annotations Before and After Code Execution**
+
+| Annotation    | Purpose                                                                                                                                  |
+|---------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| `@BeforeEach` | Annotating a method with `@BeforeEach` indicates that it should run before each test method in the test class, typically used for setup. |
+| `@AfterEach`  | Annotating a method with `@AfterEach` indicates that it should run after each test method, typically used for cleanup.                   |
+| `@BeforeAll`  | Annotating a static method with `@BeforeAll` indicates that it should run once before all test methods in the class.                     |
+
+<br>
+
+**Annotations Advanced**
+
+| Annotation                      | Purpose                                                                                                                                        |
+|---------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| `@DisplayName("Test Name")`     | Allows you to provide a custom name for a test method, making test reports more descriptive.                                                   |
+| `@Disabled`                     | Used to disable a test or test class, preventing it from being executed.                                                                       |
+| `@RepeatedTest`                 | Repeats a test a specified number of times.                                                                                                    |
+| `@TestInfo` and `@TestReporter` | Annotations used to access dependency-injected classes that provide information about the test execution, such as display names and reporting. |
+
+<br>
+
+**Nested Test Classes:** This functionality is helpful for organizing and grouping related tests. `@Nested` is used to define nested test classes.
 
 
+In the following example, there is a test class *CalculatorTest* containing nested test classes (1) AdditionTests and (2) SubtractionTests.
+
+Each nested class focuses on a specific set of test cases related to addition and subtraction operations. This approach helps organize and group related tests together.
+```java
+import org.junit.jupiter.api.*;
+
+public class CalculatorTest {
+
+    @Nested
+    @DisplayName("Addition Tests")
+    class AdditionTests {
+
+        @Test
+        @DisplayName("Adding two positive numbers")
+        void testAddTwoPositiveNumbers() {
+            Calculator calculator = new Calculator();
+            int result = calculator.add(5, 3);
+            assertEquals(8, result);
+        }
+
+        @Test
+        @DisplayName("Adding a positive and a negative number")
+        void testAddPositiveAndNegativeNumber() {
+            Calculator calculator = new Calculator();
+            int result = calculator.add(7, -2);
+            assertEquals(5, result);
+        }
+    }
+
+    @Nested
+    @DisplayName("Subtraction Tests")
+    class SubtractionTests {
+
+        @Test
+        @DisplayName("Subtracting two positive numbers")
+        void testSubtractTwoPositiveNumbers() {
+            Calculator calculator = new Calculator();
+            int result = calculator.subtract(10, 3);
+            assertEquals(7, result);
+        }
+
+        @Test
+        @DisplayName("Subtracting a negative number from a positive number")
+        void testSubtractNegativeFromPositive() {
+            Calculator calculator = new Calculator();
+            int result = calculator.subtract(5, -2);
+            assertEquals(7, result);
+        }
+    }
+}
+```
+
+
+
+## JUnit X Spring
