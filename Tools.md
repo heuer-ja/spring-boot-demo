@@ -467,4 +467,94 @@ public class CalculatorTest {
 
 
 
-## JUnit X Spring
+## Mockito
+**Problem to Solve - Dependencies:**  How to test Spring applications, especially when dealing with dependencies and external services?
+
+**Solution - Mocking:** Mock dependencies and abstract their functionality without calling them.
+
+### About Mockito
+**Definition:** Mockito is a mocking framework in the context of unit testing Spring applications. It allows developers to create mock objects and simulate the behavior of dependencies or external services. 
+
+**Mocking Objects & Syntax**
+
+| **Type** | **Explanation**                                    | **Use Case**                                                                                                                   |
+|----------|----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| **Mock** | Mocking Instances (Constructor call)               | Simplest form of mocking object. It's a nullified version of the class (all properties are null)                               |
+| **Stub** | Mocking functionality (Method call)                | Specialized mock with predefined responses when calling methods. It always returns the same output regardless of the input.    |
+| **Spy**  | Using real implementation and mock certain methods | Hybrid between real instance and mock instance; like a regular class instance, with the ability to stub specific methods calls |
+
+Example:
+
+```java
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CalculatorTest {
+    @Test
+    void testMock() {
+        // Create a mock of Database (= dependency which should not be called)
+        MyDatabase dbMock = mock(MyDatabase.class);
+        Locations locations = new Locations();
+        UserService userService = UserService(dbMock, locations); // use mock
+
+        // Test
+        assertEquals(locations, userService.getLocations()); // Output: PASS
+    }
+
+    @Test
+    void testStub() {
+        // Create mock
+        MyDatabase dbMock = mock(MyDatabase.class);
+        Locations locations = new Locations();
+        UserService userService = UserService(dbMock, locations); // use mock
+
+        // turn mock into stub
+        List<Integer> userNames = Arrays.asList("Olaf", "Tim", "Max");
+        when(dbMock.getAllUserNames()).thenReturn(userNames); // stub
+                
+        // Test 
+        assertEquals(3, userService.numberOfUsers()); // Output: PASS
+        assertEquals(5, userService.numberOfUsers()); // Output: FAILED
+    }
+
+    @Test
+    void testSpy() {
+        // NO MOCK
+        MyDatabase db = new MyDatabase;
+        Locations locations = new Locations();
+        UserService userService = UserService(db, locations); 
+        
+        // create SPY
+        UserService userServiceSpy = spy(userService);
+        
+        // stub some methods
+        when(userServiceSpy.numberOfUsers()).thenReturn(0));
+
+        // use real impl. of spy and perform tests
+        ...
+    }
+    
+}
+ ```
+<br>
+
+**verify():** This method is used to verify that specific methods of a mock object were called during the execution of a test. It allows you to assert that interactions with the mock occurred as expected. 
+
+Example:
+```java
+// Create a mock
+SomeService someService = mock(SomeService.class);
+
+// Call the method under test
+int result = myService.doSomethingWith(someService);
+
+// Verify that a specific method was called with specific arguments
+verify(someService).specificMethod("argument");
+
+// Verify that a method was called a specific number of times
+verify(someService, times(2)).anotherMethod(anyInt())
+```
