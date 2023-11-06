@@ -238,7 +238,6 @@ Additionally, it should be extensible, interoperable across various service prov
 
 No example here, better do a mini-project or watch a video.
 
-
 ## Lombok
 **Problem to Solve - Boilerplate Code:** How to reduce verbosity of Java code, eliminate boilerplate code while maintaining code readability and maintainability?
 
@@ -331,9 +330,83 @@ No example here, better do a mini-project or watch a video.
     }
     ```
 
+## OpenAPI & Swagger
+**Problem to Solve - Misunderstanding of RESTful API Functionality:** How to know what  ***different RESTful APIs*** are capable of in terms of endpoints, functionality, return types, etc.? 
+
+**Solution - Standardized RESTful API Documentation:** Introduce a consistent and standardized way to document a RESTful API's functionality resulting in no misunderstanding, better collaboration, and enhanced integration.
+
+### About OpenAPI
+**Definition:** OpenAPI serves as a standardized approach for describing and documenting RESTful APIs. It provides a machine-readable format that specifies API endpoints, request and response structures, parameters, and authentication methods.
+
+**Formats:** Written in `YAML` (preferred) or `JSON`. 
+
+### Swagger
+**Definition:** Swagger is a practical ***tool*** and user interface ***(UI)*** for documenting RESTful APIs ***following OpenAPI Specification***.
+
+**Concepts:**
+- **API Design & Documentation:** Swagger tools are primarily used for designing API endpoints, defining request and response structures, and specifying authentication methods. 
+- **Code Generation:** Swagger enables the automatic generation of client SDKs, server stubs, and interactive documentation from API specifications.
+
+### Developing OpenAPI Specification
+
+**Design-first vs. Code-first:** When developing OpenAPI specification, developers can use one of two ways to realize it.
+
+- **Design-first:** First, use swagger to specify/document API before any code is written. Then, create the code and satisfy specification.
+- **Code-first:** Code first and auto-generate YAML/JSON-based OpenAPI specification based on code. 
+
+**YAML vs. JSON:** Both, `YAML` and `JSON` can be used to define the OpenAPI specification. However, YAML is preferred due to its shorter syntax. 
+
+1. Example YAML Specification:
+    ```yaml
+    openapi: 3.0.0
+    info:
+      title: Sample API
+      version: 1.0.0
+    paths:
+      /hello:
+        get:
+          summary: Get a friendly greeting
+          responses:
+            '200':
+                description: A successful response
+                content:
+                  application/json:
+                    schema:
+                      type: string
+    ```
+2. Example JSON:
+    ```json
+    {
+      "openapi": "3.0.0",
+      "info": {
+        "title": "Sample API",
+        "version": "1.0.0"
+      },
+      "paths": {
+        "/hello": {
+          "get": {
+            "summary": "Get a friendly greeting",
+            "responses": {
+              "200": {
+                "description": "A successful response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    ```
+
+
 
 # Testing
-
 ## JUnit5
 **Problem - Changes in Code** How to ensure that software functions correctly, especially when changes are made to the code or new features are added?
 
@@ -464,8 +537,6 @@ public class CalculatorTest {
     }
 }
 ```
-
-
 
 ## Mockito
 **Problem to Solve - Dependencies:**  How to test Spring applications, especially when dealing with dependencies and external services?
