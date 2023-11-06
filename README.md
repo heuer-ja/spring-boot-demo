@@ -412,7 +412,7 @@ public class MyConfiguration {
 # 3. Working with Data
 For this demo project it is too complicated to work with PostgreSQL or Co. Instead, `H2` is used. 
 
-### H2 Database
+## H2 Database
 To use this **embedded** database, do the following steps:
 
 1. **Dependencies:** In pom.xml add
@@ -446,4 +446,164 @@ To use this **embedded** database, do the following steps:
    ```
       
     Press `Test Connection` and `Connect`.
-5. 
+
+
+## QueryDSL
+**Problem to Solve -:**
+How to improve the querying capabilities in a (Java) application, allowing for more dynamic and complex queries without using `SQL` directly.
+
+**Solution - Integrated Querying-support:** Introduce an abstracted query language (e.g., SQL abstraction).  
+
+### QueryDSL
+**Definition:**
+QueryDSL is a library that provides a ***Java-based domain-specific language (DSL)*** for constructing type-safe and dynamic SQL, JPQL (Java Persistence Query Language), and other ***queries***. Queries are expressed as code, enhancing the readability, maintainability, and flexibility of query logic in their applications.
+
+**Concepts:**
+
+- **Abstraction:** QueryDSL can abstract `SQL`, `JPQL`, `MongoDB`.
+- **Entity Mapping:** Classes annotated with `@Entity` (JPA entities) are used to create query expressions and perform database operations.
+- **Auto-Completion:** By using path expressions QueryDSL references to properties/columns, e.g., `QEmployee.employee` (Table QEmployee, column employee). 
+- **Querying:** It provides methods for methods like `where()`, `orderBy()`, and `select()`.  
+
+
+
+**Adding to Maven Project**: To add `OpenDSL` to a maven project, paste following tags into the `pom.xml`:
+
+```xml
+<properties>
+    <querydsl.version>5.0.0</querydsl.version>
+</properties>
+...
+<dependencies>
+    <dependency>
+        <groupId>com.querydsl</groupId>
+        <artifactId>querydsl-apt</artifactId>
+        <version>${querydsl.version}</version>
+        <classifier>jakarta</classifier>
+        <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+        <groupId>com.querydsl</groupId>
+        <artifactId>querydsl-jpa</artifactId>
+        <classifier>jakarta</classifier>
+        <version>${querydsl.version}</version>
+    </dependency>
+</dependencies>
+```
+
+**Example Code:** In the following there are exemplary steps presented how to use `OpenDSL`:
+
+1. **Define `@Entity` classes:** These classes are mirrored as tables by `JPA`. 
+    
+    ```java
+    @Entity
+    public class User {
+    
+        @Id
+        @GeneratedValue
+        private Long id;
+    
+        private String login;
+    
+        private Boolean disabled;
+    
+        @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
+        private Set<BlogPost> blogPosts = new HashSet<>(0);
+    
+        // getters and setters
+    
+    }
+    
+    @Entity
+    public class BlogPost {
+    
+        @Id
+        @GeneratedValue
+        private Long id;
+    
+        private String title;
+    
+        private String body;
+    
+        @ManyToOne
+        private User user;
+    
+        // getters and setters
+    
+    }
+    ```
+
+2. **Generate QClasses for  model:** QClasses are auto-generated classes representing the class as part of the database model
+    ```mvn compile```
+3. **Exploring Generated Classes:** QClasses can be found in `target/generated-sources/java`. 
+    ```java
+   @Generated // do not modify a QClass manually
+   class QUser {
+        ...
+        public static final QUser user = new QUser("user"); // instance  used for querying
+        ...
+   }
+    ```
+4. **Querying:**
+    ```java
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.baeldung.querydsl.intro");
+    EntityManager em = entityManagerFactory.createEntityManager();
+    JPAQueryFactory queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, em);
+    ```
+   
+    and
+    ```java
+    QUser user = QUser.user;
+
+   //==============================================
+   // Select
+   User c = queryFactory.selectFrom(user)
+        .where(user.login.eq("David"))
+        .fetchOne();
+   
+   // Ordering and Grouping
+   List<User> c = queryFactory.selectFrom(user)
+          .orderBy(user.login.asc())
+          .fetch();
+   
+   NumberPath<Long> count = Expressions.numberPath(Long.class, "c");
+
+   List<Tuple> userTitleCounts = queryFactory.select(
+    blogPost.title, blogPost.id.count().as(count))
+        .from(blogPost)
+        .groupBy(blogPost.title)
+        .orderBy(count.desc())
+        .fetch();
+   
+   //  Complex Queries With Joins and Subqueries
+   QBlogPost blogPost = QBlogPost.blogPost;
+
+    List<User> users = queryFactory.selectFrom(user)
+        .innerJoin(user.blogPosts, blogPost)
+        .on(blogPost.title.eq("Hello World!"))
+        .fetch();
+   
+   // Subquery
+   List<User> users = queryFactory.selectFrom(user)
+        .where(user.id.in(JPAExpressions.select(blogPost.user.id)
+        .from(blogPost)
+        .where(blogPost.title.eq("Hello World!"))))
+        .fetch();
+   
+   //==============================================
+   // Update 
+   queryFactory.update(user)
+        .where(user.login.eq("Ash"))
+        .set(user.login, "Ash2")
+        .set(user.disabled, true)
+        .execute();
+   
+   //==============================================
+   // Delete 
+   queryFactory.delete(user)
+    .where(user.login.eq("David"))
+    .execute();
+    ```
+
+
