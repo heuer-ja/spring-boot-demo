@@ -472,7 +472,7 @@ To use this **embedded** database, do the following steps:
 
 **Library - MapStruct:** Several libraries and frameworks can help with DTO mapping in Spring. One popular choice is `MapStruct`, a ***code generation tool*** that simplifies the mapping process by generating efficient mapping code.
 
-**Example Code:** The following example shows the model/class `User` and its related DTO `UserDTO` as well as two possible ways to implemenet an `UserMapper` -  one with and one without a library.
+**Example Code:** The following example shows the model/class `User` and its related DTO `UserDTO` as well as two possible ways to implement an `UserMapper` -  one with and one without a library.
 ```java
 // Domain Entity
 @Entity
