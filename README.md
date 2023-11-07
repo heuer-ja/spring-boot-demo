@@ -447,6 +447,87 @@ To use this **embedded** database, do the following steps:
       
     Press `Test Connection` and `Connect`.
 
+## DTO Mapping
+- record vs class for DTOs
+- libraries vs self implementation ,
+
+**Problem:** Classes/Models contain uncritical and sensitive/redundant fields. How to transfer an instance from one end (server) to another (client) without sending sensitive/redundant fields enhancing security / reducing overhead?
+
+**Solution:** Next to the normal model/class create another class only used for data transmission. Both classes can be mapped to each other. However, the new class does not contain sensitive/redundant fields.
+
+### DTO & DTO Mapping
+**Definition - DTO:** A Data Transfer Object (DTO) is ***design pattern*** used to ***encapsulate data*** and send it from one part (server) of the application to another (client). Thus, sensitive or redundant data of a model will not be sent.
+
+**Definition - DTO Mapping:** DTO Mapping refers to the process of converting domain objects (typically `JPA` entities or data model objects) into DTOs and vice versa. This mapping ensures that only relevant data is transferred between different parts of the application.
+
+**Concepts:**
+- **Reducing Overhead:** DTOs reduce overhead of transferring unnecessary data between different layers.
+
+
+- **Immutability:** Usually, DTOs are immutable, ensuring that the data they carry remains consistent and can be safely transferred between different parts of the application. Better use `records` instead of `classes` for DTOs.
+
+
+- **DTO Mapping:** The process of mapping domain objects to DTOs is crucial for ensuring that only the required data is exposed externally. This is often done using libraries or custom mapping code.
+
+
+**Library - MapStruct:** Several libraries and frameworks can help with DTO mapping in Spring. One popular choice is `MapStruct`, a ***code generation tool*** that simplifies the mapping process by generating efficient mapping code.
+
+**Example Code:** The following example shows the model/class `User` and its related DTO `UserDTO` as well as two possible ways to implemenet an `UserMapper` -  one with and one without a library.
+```java
+// Domain Entity
+@Entity
+public class User {
+    @Id
+    private Long id;
+    private String username;
+    private String email;
+    private String password;
+    
+    // business logic | other fields, getters, setters
+}
+
+// DTO as a Record
+public record UserDTO(
+        String username, 
+        String email
+        // no email
+        // no password
+) {
+}
+
+// DTO Mapping using Library
+@Mapper
+public interface UserMapper {
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+
+    UserDTO userToUserDTO(User user); // auto-generated 
+    User userDTOToUser(UserDTO userDTO); // auto-generated
+}
+
+
+// DTO Mapping manually
+public class UserMapper {
+
+    public static UserDTO userToUserDTO(User user) {
+        if (user == null) { return null; }
+        return new UserDTO(user.getUsername(), user.getEmail());
+    }
+
+    public static User userDTOToUser(UserDTO userDTO) {
+        if (user == null) { return null; }
+        
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        // Set other properties if needed
+
+        return user;
+    }
+}
+```
+
+
+
 
 ## QueryDSL
 **Problem to Solve -:**
