@@ -629,3 +629,70 @@ verify(someService).specificMethod("argument");
 // Verify that a method was called a specific number of times
 verify(someService, times(2)).anotherMethod(anyInt())
 ```
+
+## Logging with SLF4J
+**Problem to Solve - Inconsistency in Logging:** There exist many inconsistencies in Java logging libraries/frameworks. How to create a unified way for logging in Java?
+
+**Solution - Use a Facade:** Provide a unified logging library being able to interact with different logging libraries. 
+
+### SLF4J 
+
+**Definition:** SLF4J (Simple Logging Facade for Java) is a logging framework designed to simplify and standardize the process of logging in Java applications. It serves as a ***facade***, providing a common logging API while allowing the application to choose the actual logging implementation at runtime.
+
+**History:** SLF4J was created to address the challenges and inconsistencies in Java logging frameworks and can work seamlessly with various underlying logging libraries.
+
+**Concepts:**
+- **Facade Pattern:** SLF4J follows the facade pattern, offering a single, consistent API for logging across different implementations. This decouples the application code from the specific logging framework being used, improving flexibility and maintainability.
+
+
+- **Bridging:** SLF4J includes bridge libraries that allow it to work with popular logging frameworks such as Logback, Log4j, and java.util.logging. This means you can choose the most suitable backend implementation while maintaining a consistent API in your application.
+
+
+- **Markers and MDC:** SLF4J supports features like markers and the Mapped Diagnostic Context (MDC) to enhance logging by attaching additional contextual information to log messages.
+
+
+**Important Syntax:** SLF4J primarily relies on the following syntax elements:
+- **Logger:** A logger instance is obtained using `LoggerFactory.getLogger()` and is used to create log entries.
+
+
+- **Log Levels:** SLF4J supports different log levels, including `TRACE, DEBUG, INFO, WARN, and ERROR`.
+
+
+- **Placeholder:** Log messages are created with ***placeholders*** and passed as arguments to the logger. 
+
+
+**Example Code - Logging:**
+
+Code:
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class SLF4JExample {
+
+    private static final Logger logger = LoggerFactory.getLogger(SLF4JExample.class);
+
+    public static void main(String[] args) {
+        logger.trace("This is a TRACE level message.");
+        logger.debug("This is a DEBUG level message.");
+        logger.info("This is an INFO level message.");
+        logger.warn("This is a WARNING level message.");
+        logger.error("This is an ERROR level message.");
+
+        String name = "John";
+        int age = 30;
+        logger.info("User {} is {} years old.", name, age);
+    }
+}
+```
+
+Output:
+```
+13:45:00.123 [main] TRACE com.example.SLF4JExample - This is a TRACE level message.
+13:45:00.456 [main] DEBUG com.example.SLF4JExample - This is a DEBUG level message.
+13:45:00.789 [main] INFO com.example.SLF4JExample - This is an INFO level message.
+13:45:01.012 [main] WARN com.example.SLF4JExample - This is a WARNING level message.
+13:45:01.345 [main] ERROR com.example.SLF4JExample - This is an ERROR level message.
+13:45:01.678 [main] INFO com.example.SLF4JExample - User John is 30 years old.
+```
+
