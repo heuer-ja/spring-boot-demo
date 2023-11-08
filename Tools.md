@@ -661,6 +661,8 @@ verify(someService, times(2)).anotherMethod(anyInt())
 - **Placeholder:** Log messages are created with ***placeholders*** and passed as arguments to the logger. 
 
 
+
+
 **Example Code - Logging:**
 
 Code:
@@ -695,4 +697,56 @@ Output:
 13:45:01.345 [main] ERROR com.example.SLF4JExample - This is an ERROR level message.
 13:45:01.678 [main] INFO com.example.SLF4JExample - User John is 30 years old.
 ```
+
+
+
+# Protocols
+## MQTT
+**Problem to Solve - Unreliable Communication:** Usually when dealing with ***IoT devices*** resources are limited and traditional communication protocols may not be efficient or scalable. How to establish ***efficient and scalable communication*** in such ***resource-constrained environments***?
+
+**Solution - Lightweight Protocol:** Create a lightweight and publish-subscribe protocol with specific features to address the challenges in resource-constrained environments.
+
+### About MQTT
+**Definition:** MQTT (Message Queuing Telemetry Transport) is a publish-subscribe messaging protocol designed for efficient and low-overhead communication between devices in constrained or unreliable networks. It is known for its simplicity and lightweight nature.
+
+**History:** MQTT was originally developed by Dr. Andy Stanford-Clark of IBM and Arlen Nipper of Arcom in the late 1990s. It has since become an open standard with various versions. The ***Eclipse Foundation***, an influential open-source organization, has significantly contributed to MQTT's standardization and adoption through initiatives like Eclipse Paho.
+
+**Concepts**
+MQTT implements these concepts:
+- **Publish-Subscribe Model:** Publishers send messages to topics, and subscribers receive messages from topics they are interested in.
+
+
+- **Broker:** MQTT/Message Broker is a crucial component that  acts as an intermediary between MQTT clients, enabling the exchange of messages.
+
+
+- **Last Will and Testament:** It allows clients to specify a "last will" message that is published if the client disconnects unexpectedly.
+
+**Versions**
+MQTT has several versions, with versions `3.1.1 (old)` and `5 (new)` being the most widely used.
+
+| Feature                         | MQTT Version 3.1.1 | MQTT Version 5    |
+|---------------------------------|--------------------|-------------------|
+| Session State                   | No                 | Yes               |
+| User Properties                 | No                 | Yes               |
+| Reason Codes                    | No                 | Yes               |
+| Topic Aliases                   | No                 | Yes               |
+| Shared Subscriptions            | No                 | Yes               |
+| Quality of Service (QoS) Levels | 0, 1, 2            | 0, 1, 2           |
+| Retained Messages               | Yes                | Yes               |
+| Last Will and Testament         | Yes                | Yes               |
+| Maximum Packet Size             | 256 MB             | 256 MB            |
+| Message Expiry Interval         | No                 | Yes               |
+| Payload Format Indicator        | No                 | Yes               |
+| Subscription Identifiers        | No                 | Yes               |
+| Maximum Inflight Messages       | 20                 | Unlimited         |
+
+<br>
+<br>
+
+**MQTT in Java Spring**
+In Java Spring, MQTT can be integrated using libraries like `Eclipse Paho` to enable MQTT-based communication within Spring applications.
+
+
+**MQTT when dealing with smart cars**
+MQTT can be used to enable communication between various vehicle components, such as sensors, control units, and external systems, allowing them to exchange data and instructions in a lightweight and efficient manner.
 
